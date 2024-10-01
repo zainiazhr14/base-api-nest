@@ -1,0 +1,42 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+/logs
+
+# dependencies
+/node_modules
+package-lock.json
+
+# key
+g-service-account.json
+
+# testing
+/coverage
+
+# config
+.env.development
+.env.local
+.env.production
+
+# production
+/build
+
+# upload
+/uploads
+
+# sample
+/sample
+
+# misc
+yarn.lock
+pnpm-lock.yaml
+.DS_Store
+.env
+.vscode
+.idea
+
+# Debug log
+npm-debug.log*
+
+/prisma/migrations
+
