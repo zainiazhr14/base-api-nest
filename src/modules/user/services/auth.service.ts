@@ -49,14 +49,6 @@ export class AuthService {
 
     const token = await this.createToken(payloadJwt);
 
-    await this.prismaService.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        token
-      }
-    })
     return {
       token: token
     };
@@ -91,20 +83,10 @@ export class AuthService {
       id: user.id
     })
 
-
-    user = await this.prismaService.user.update({
-      where: {
-        id: user.id
-      },
-      data: {
-        token: tokenUser
-      }
-    })
-
     return {
       username: user.username,
       name: user.name,
-      token: user.token
+      token: tokenUser
     }
   }
 
