@@ -17,8 +17,9 @@ datasource db {
 model User {
   id        Int         @id @default(autoincrement())
   username  String      @db.VarChar(100)
+  email     String      @db.VarChar(100)
   name      String      @db.VarChar(100)
-  password  String      @db.VarChar(100)
+  password  String?     @db.VarChar(100)
   
   contacts  Contact[]
 

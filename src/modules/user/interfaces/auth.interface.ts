@@ -8,9 +8,13 @@ export class LoginRequest {
   password: string;
 }
 
+export class LoginGoogleRequest {
+  @ApiProperty({ required: true })
+  token: string;
+}
 
 export class LoginResponse {
-  token: string
+  token: string;
 }
 
 export class RegisterRequest {

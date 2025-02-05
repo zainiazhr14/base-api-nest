@@ -9,4 +9,4 @@ import { FileModule } from './modules/file/file.module';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

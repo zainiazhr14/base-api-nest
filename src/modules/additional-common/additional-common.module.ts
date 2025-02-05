@@ -5,13 +5,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Global()
 @Module({
-  imports: [MongooseModule.forRootAsync({
-    imports: [ConfigModule],
-    useFactory: async (configService: ConfigService) => ({
-      uri: configService.get<string>('DB_MONGO_URL')
+  imports: [
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('DB_MONGO_URL'),
+      }),
+      inject: [ConfigService],
     }),
-    inject: [ConfigService]
-  })],
-  providers: [Mongoose]
+  ],
+  providers: [Mongoose],
 })
-export class AdditionalCommonModule { }
+export class AdditionalCommonModule {}

@@ -4,6 +4,6 @@ import { FastifyMulterModule } from '@nest-lab/fastify-multer';
 
 @Module({
   imports: [FastifyMulterModule],
-  controllers: [FileController]
+  controllers: [FileController],
 })
-export class FileModule { }
+export class FileModule {}

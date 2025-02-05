@@ -1,50 +1,60 @@
-import { Controller, Patch, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Patch,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor, File, FilesInterceptor } from '@nest-lab/fastify-multer';
+import {
+  FileInterceptor,
+  File,
+  FilesInterceptor,
+} from '@nest-lab/fastify-multer';
 
-@ApiTags("files")
-@Controller("file")
+@ApiTags('files')
+@Controller('file')
 export class FileController {
-  constructor() { }
+  constructor() {}
 
-  @Patch("/")
-  @ApiOperation({ summary: "Uploads a single file" })
-  @ApiConsumes("multipart/form-data")
-  @UseInterceptors(FileInterceptor("file"))
+  @Patch('/')
+  @ApiOperation({ summary: 'Uploads a single file' })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('file'))
   @ApiBody({
     required: true,
     schema: {
-      type: "object",
+      type: 'object',
       properties: {
         file: {
-          type: "string",
-          format: "binary",
-        }
-      }
-    }
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
   singleFile(@UploadedFile() file: File) {
     return console.log(file);
   }
 
-  @Patch("/files")
-  @ApiConsumes("multipart/form-data")
-  @ApiOperation({ summary: "Uploads multiple files" })
-  @UseInterceptors(FilesInterceptor("files", 4))
+  @Patch('/files')
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Uploads multiple files' })
+  @UseInterceptors(FilesInterceptor('files', 4))
   @ApiBody({
     required: true,
     schema: {
-      type: "object",
+      type: 'object',
       properties: {
         files: {
-          type: "array",
+          type: 'array',
           items: {
-            type: "string",
-            format: "binary"
-          }
-        }
-      }
-    }
+            type: 'string',
+            format: 'binary',
+          },
+        },
+      },
+    },
   })
   multipleFiles(@UploadedFiles() files: Array<File>) {
     return console.log(files);
