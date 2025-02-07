@@ -1,0 +1,11 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DefaultResponse {
+  message: String!
+}
+
+type Query {
+  health: DefaultResponse!
+}

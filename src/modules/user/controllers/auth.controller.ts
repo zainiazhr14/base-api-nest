@@ -10,6 +10,7 @@ import { WebResponse } from '@user/interfaces/web.interface';
 import { AuthService } from '@user/services/auth.service';
 import { Auth } from '@common/decorators/auth.decorator';
 import { ApiTags } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 
 @Controller('/users/auth')
 @ApiTags('auth')
@@ -29,11 +30,18 @@ export class AuthController {
   async LoginGoogle(
     @Body() body: LoginGoogleRequest,
   ): Promise<WebResponse<LoginResponse>> {
-    const result = await this.authService.loginGoogle(body);
+    try {
+      const result = await this.authService.loginGoogle(body);
 
-    return {
-      data: result,
-    };
+      return {
+        data: result,
+      };
+    } catch {
+      return {
+        data: null,
+        error: 'Your request cannot be completed due to a server error',
+      };
+    }
   }
 
   @Post('/register')

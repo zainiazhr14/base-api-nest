@@ -87,14 +87,12 @@ export class AuthService {
     });
 
     if (!user) {
-      user = {
-        name: payload.name,
-        username: payload.name,
-        email: payload.email,
-      };
-
-      await this.prismaService.user.create({
-        data: user,
+      user = await this.prismaService.user.create({
+        data: {
+          name: payload.name,
+          username: payload.name,
+          email: payload.email,
+        },
       });
     }
 
