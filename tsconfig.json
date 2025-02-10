@@ -28,6 +28,9 @@
       ],
       "@user/*": [
         "./modules/user/*"
+      ],
+      "@graphql/*": [
+        "./modules/graphql/*"
       ]
     }
   }
