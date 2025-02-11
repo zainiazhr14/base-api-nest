@@ -73,6 +73,43 @@ export class AuthService {
     };
   }
 
+  async loginPhone(body: LoginGoogleRequest): Promise<LoginResponse> {
+    const google = await this.googleClient.verifyIdToken({
+      idToken: body.token,
+    });
+
+    const payload = google.getPayload();
+
+    let user = await this.prismaService.user.findFirst({
+      where: {
+        email: payload.email,
+      },
+    });
+
+    if (!user) {
+      user = await this.prismaService.user.create({
+        data: {
+          name: payload.name,
+          username: payload.name,
+          email: payload.email,
+        },
+      });
+    }
+
+    const payloadJwt = {
+      email: user.email,
+      username: user.username,
+      name: user.name,
+      id: user.id,
+    };
+
+    const token = await this.createToken(payloadJwt);
+
+    return {
+      token: token,
+    };
+  }
+
   async loginGoogle(body: LoginGoogleRequest): Promise<LoginResponse> {
     const google = await this.googleClient.verifyIdToken({
       idToken: body.token,

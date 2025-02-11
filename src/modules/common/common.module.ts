@@ -1,9 +1,17 @@
+import * as winston from 'winston';
+import * as path from 'path';
 import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { WinstonModule } from 'nest-winston';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaService } from './services/prisma.service';
 import { ValidationService } from './services/validation.service';
-import * as winston from 'winston';
+import {
+  AcceptLanguageResolver,
+  CookieResolver,
+  HeaderResolver,
+  I18nModule,
+  QueryResolver,
+} from 'nestjs-i18n';
 import { APP_FILTER } from '@nestjs/core';
 import { ErrorFilter } from './filters/error.filter';
 import { AuthMiddleware } from './middlewares/auth.middleware';
@@ -38,6 +46,22 @@ import { ThrottlerModule } from '@nestjs/throttler';
         limit: 15,
       },
     ]),
+    I18nModule.forRootAsync({
+      useFactory: () => ({
+        fallbackLanguage: 'en',
+        loaderOptions: {
+          path: path.join(__dirname, '../lang/'),
+          watch: true,
+        },
+      }),
+      resolvers: [
+        new QueryResolver(['lang', 'l']),
+        new HeaderResolver(['x-custom-lang']),
+        new CookieResolver(),
+        AcceptLanguageResolver,
+      ],
+      inject: [ConfigService],
+    }),
   ],
   providers: [
     PrismaService,

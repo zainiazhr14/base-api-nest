@@ -26,6 +26,24 @@ export class AuthController {
     };
   }
 
+  @Post('/login/phone')
+  async LoginPhone(
+    @Body() body: LoginGoogleRequest,
+  ): Promise<WebResponse<LoginResponse>> {
+    try {
+      const result = await this.authService.loginPhone(body);
+
+      return {
+        data: result,
+      };
+    } catch {
+      return {
+        data: null,
+        error: 'Your request cannot be completed due to a server error',
+      };
+    }
+  }
+
   @Post('/login/google')
   async LoginGoogle(
     @Body() body: LoginGoogleRequest,
