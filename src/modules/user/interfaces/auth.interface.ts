@@ -13,6 +13,14 @@ export class LoginGoogleRequest {
   token: string;
 }
 
+export class LoginPhoneRequest {
+  @ApiProperty({ required: true })
+  country_code: string;
+
+  @ApiProperty({ required: true })
+  phone_number: string;
+}
+
 export class LoginResponse {
   token: string;
 }

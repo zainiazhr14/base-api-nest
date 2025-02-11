@@ -4,6 +4,7 @@ import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import {
   LoginGoogleRequest,
+  LoginPhoneRequest,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -73,27 +74,16 @@ export class AuthService {
     };
   }
 
-  async loginPhone(body: LoginGoogleRequest): Promise<LoginResponse> {
-    const google = await this.googleClient.verifyIdToken({
-      idToken: body.token,
-    });
-
-    const payload = google.getPayload();
-
-    let user = await this.prismaService.user.findFirst({
+  async loginPhone(body: LoginPhoneRequest): Promise<LoginResponse> {
+    const user = await this.prismaService.user.findFirst({
       where: {
-        email: payload.email,
+        country_code: body.country_code,
+        phone_number: body.phone_number,
       },
     });
 
     if (!user) {
-      user = await this.prismaService.user.create({
-        data: {
-          name: payload.name,
-          username: payload.name,
-          email: payload.email,
-        },
-      });
+      throw new HttpException('User Not Found', 404);
     }
 
     const payloadJwt = {

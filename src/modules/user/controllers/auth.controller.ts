@@ -4,6 +4,7 @@ import {
   LoginResponse,
   RegisterRequest,
   LoginGoogleRequest,
+  LoginPhoneRequest,
 } from '@user/interfaces/auth.interface';
 import { UserResponse } from '@user/interfaces/user.interface';
 import { WebResponse } from '@user/interfaces/web.interface';
@@ -28,7 +29,7 @@ export class AuthController {
 
   @Post('/login/phone')
   async LoginPhone(
-    @Body() body: LoginGoogleRequest,
+    @Body() body: LoginPhoneRequest,
   ): Promise<WebResponse<LoginResponse>> {
     try {
       const result = await this.authService.loginPhone(body);
