@@ -5,24 +5,34 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Welcome Email
     style.
+        * {
+            font-size: 12px;
+        }
         body {
         font-family: Arial, sans-serif;
         background-color: #f9f9f9;
         margin: 0;
         padding: 20px;
         }
-        .container {
-        max-width: 600px;
-        margin: auto;
-        background-color: #ffffff;
-        padding: 20px;
-        border: 1px solid #dddddd;
-        }
         .header {
         text-align: center;
         margin-bottom: 20px;
+        font-size: 16px;
+        font-weight: 550;
+        }
+        .content {
+            background-color: #ffffff;
+            padding: 10px;
         }
     body
     .container
-        .header
-        h1 Welcome!!!!
+        .header Email Verification 
+    
+    div 
+    .content 
+        p Hello #{username}, 
+        p Your account is nearly set up. Please click link below to verify your email address 
+        p #{link_verification}
+        p If you’re having issues with email verification or creating an account, please contact player support If you did not make this request, you can ignore this email. No account will be created.
+        p Thank you,
+        p BASE API
