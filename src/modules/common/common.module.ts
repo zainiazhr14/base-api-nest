@@ -17,6 +17,9 @@ import { ErrorFilter } from './filters/error.filter';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { MailerService } from './services/mailer.service';
 
 @Global()
 @Module({
@@ -62,6 +65,31 @@ import { ThrottlerModule } from '@nestjs/throttler';
       ],
       inject: [ConfigService],
     }),
+    MailerModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('SMTP_HOST'),
+          port: +configService.get<string>('SMTP_PORT'),
+          secure: false,
+          ignoreTLS: true,
+          auth: {
+            user: configService.get<string>('SMTP_EMAIL_ID'),
+            pass: configService.get<string>('SMTP_EMAIL_PASS'),
+          }
+        },
+        defaults: {
+          from: configService.get<string>('MAIL_FROM'),
+        },
+        template: {
+          dir: __dirname + '/templates/mail',
+          adapter: new PugAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
+      inject: [ConfigService],
+    }),
   ],
   providers: [
     PrismaService,
@@ -70,8 +98,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
       provide: APP_FILTER,
       useClass: ErrorFilter,
     },
+    MailerService,
   ],
-  exports: [PrismaService, ValidationService],
+  exports: [PrismaService, ValidationService, MailerService],
+  controllers: [],
 })
 export class CommonModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

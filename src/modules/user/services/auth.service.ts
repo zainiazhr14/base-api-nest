@@ -18,6 +18,7 @@ import * as bcrypt from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
+import { MailService } from '@common/services/mailer.service';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,7 @@ export class AuthService {
     private validationService: ValidationService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private readonly mailService: MailService,
   ) {
     this.googleClient = new OAuth2Client(
       this.configService.get<string>('GOOGLE_CLIENT_ID'),
@@ -156,11 +158,18 @@ export class AuthService {
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(body.password, salt);
 
-    const user = await this.prismaService.user.create({
+    const user: User = await this.prismaService.user.create({
       data: {
         ...body,
         password: hashPassword,
       },
+    });
+
+    await this.mailService.sendEmail({
+      subject: 'XYZ Email Verification',
+      template: 'user-email-verification',
+      receiver: user.email,
+      context: user,
     });
 
     const tokenUser = await this.createToken({

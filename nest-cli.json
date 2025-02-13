@@ -9,7 +9,8 @@
         "include": "lang/**/*",
         "watchAssets": true,
         "outDir": "dist/apps/api"
-      }
+      },
+      "modules/common/templates/**/*"
     ]
   }
 }
