@@ -19,7 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { MailerService } from './services/mailer.service';
+import { MailService } from './services/mailer.service';
 
 @Global()
 @Module({
@@ -70,12 +70,13 @@ import { MailerService } from './services/mailer.service';
         transport: {
           host: configService.get<string>('SMTP_HOST'),
           port: +configService.get<string>('SMTP_PORT'),
-          secure: false,
+          secure: true,
           ignoreTLS: true,
           auth: {
             user: configService.get<string>('SMTP_EMAIL_ID'),
             pass: configService.get<string>('SMTP_EMAIL_PASS'),
-          }
+          },
+          tls: { rejectUnauthorized: false },
         },
         defaults: {
           from: configService.get<string>('MAIL_FROM'),
@@ -98,9 +99,9 @@ import { MailerService } from './services/mailer.service';
       provide: APP_FILTER,
       useClass: ErrorFilter,
     },
-    MailerService,
+    MailService,
   ],
-  exports: [PrismaService, ValidationService, MailerService],
+  exports: [PrismaService, ValidationService, MailService],
   controllers: [],
 })
 export class CommonModule implements NestModule {

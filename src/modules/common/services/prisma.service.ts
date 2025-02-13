@@ -18,10 +18,10 @@ export class PrismaService
   ) {
     super({
       log: [
-        {
-          emit: 'event',
-          level: 'info',
-        },
+        // {
+        //   emit: 'event',
+        //   level: 'info',
+        // },
         {
           emit: 'event',
           level: 'warn',
@@ -30,10 +30,10 @@ export class PrismaService
           emit: 'event',
           level: 'error',
         },
-        {
-          emit: 'event',
-          level: 'query',
-        },
+        // {
+        //   emit: 'event',
+        //   level: 'query',
+        // },
       ],
     });
   }

@@ -8,7 +8,7 @@
       {
         "include": "lang/**/*",
         "watchAssets": true,
-        "outDir": "dist/apps/api"
+        "outDir": "dist/modules"
       },
       "modules/common/templates/**/*"
     ]

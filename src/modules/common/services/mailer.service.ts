@@ -34,12 +34,13 @@ export class MailService {
         response,
       );
     } catch (error) {
-      this.logger.error(
-        `Error while sending mail with the following parameters : ${JSON.stringify(
-          params,
-        )}`,
-        error,
-      );
+      console.log(error);
+      // this.logger.error(
+      //   `Error while sending mail with the following parameters : ${JSON.stringify(
+      //     params,
+      //   )}`,
+      //   error,
+      // );
     }
   }
 }

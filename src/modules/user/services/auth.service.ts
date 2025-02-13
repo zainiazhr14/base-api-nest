@@ -17,8 +17,9 @@ import { Logger } from 'winston';
 import * as bcrypt from 'bcrypt';
 import { OAuth2Client } from 'google-auth-library';
 import { ConfigService } from '@nestjs/config';
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { MailService } from '@common/services/mailer.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +51,7 @@ export class AuthService {
 
     const user = await this.prismaService.user.findFirst({
       where: {
-        username: requestData.username,
+        email: requestData.email,
       },
     });
 
@@ -116,13 +117,18 @@ export class AuthService {
     });
 
     if (!user) {
-      user = await this.prismaService.user.create({
+      const userPayload: Prisma.UserCreateArgs = {
         data: {
           name: payload.name,
           username: payload.name,
           email: payload.email,
         },
-      });
+      };
+
+      if (payload.email_verified)
+        userPayload.data.email_verified_at = moment().format();
+
+      user = await this.prismaService.user.create(userPayload);
     }
 
     const payloadJwt = {
@@ -152,7 +158,7 @@ export class AuthService {
     });
 
     if (usernameExist) {
-      throw new HttpException('Username already exist', 400);
+      throw new HttpException('Email already registered', 400);
     }
 
     const salt = bcrypt.genSaltSync(10);

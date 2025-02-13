@@ -55,7 +55,8 @@ export class AuthController {
       return {
         data: result,
       };
-    } catch {
+    } catch (e) {
+      console.log(e);
       return {
         data: null,
         error: 'Your request cannot be completed due to a server error',

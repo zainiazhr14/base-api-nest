@@ -6,13 +6,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Global()
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DB_MONGO_URL'),
-      }),
-      inject: [ConfigService],
-    }),
+    // MongooseModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     uri: configService.get<string>('DB_MONGO_URL'),
+    //   }),
+    //   inject: [ConfigService],
+    // }),
   ],
   providers: [Mongoose],
 })
